@@ -1,0 +1,177 @@
+﻿@page "/home"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@using BankService
+
+<link href="css/home.css" rel="stylesheet" />
+
+<div>
+    <header>
+        <nav>
+            <h2>Welcome back</h2>
+            <button class="nav-button fa fa-bars"></button>
+            <div>
+                <ul>
+                    <li><a href="" @onclick="DeleteAccount">Delete Account</a></li>
+                    <li><a href="" @onclick="DisConnect">Disconnect</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>Your account details</h1>
+        <div class="pin-section">
+            <p>Entered PIN: <span id="decryptedPin" style="display: @pinDisplayStyle">@DecryptedPin</span></p>
+            <button @onclick="TogglePin">@displayPin</button>
+        </div>
+        <h3>Your Current Amount Is: @Amount.ToString("0.00") </h3>
+    </div>
+    <div class="cont1">
+        <h1>Change your solde</h1>
+        <button @onclick="ShowDepositPopup">Deposit</button>
+        <button @onclick="ShowWithdrawalPopup">Withdraw</button>
+    </div>
+</div>
+
+@if (showDepositPopup)
+{
+    <div class="popup">
+        <h4>Enter Deposit Amount:</h4>
+        <input @bind="dp" type="number" />
+        <button @onclick="Deposit">Confirm</button>
+        <button @onclick="CloseDepositPopup">Cancel</button>
+    </div>
+}
+
+<!-- Withdrawal Popup -->
+@if (showWithdrawalPopup)
+{
+    <div class="popup">
+        <h4>Enter Withdrawal Amount:</h4>
+        <input @bind="wd" type="number" />
+        <button @onclick="Withdraw">Confirm</button>
+        <button @onclick="CloseWithdrawalPopup">Cancel</button>
+    </div>
+}
+
+
+@code {
+    private banque_serviceClient _bankServiceClient;
+    private string Pin { get; set; }
+    private string DecryptedPin { get; set; }
+    private float Amount { get; set; }
+    private string EncryptionKey = "MyEncryptionKey123";
+    private string pinDisplayStyle = "none";
+    private string displayPin = "Show PIN Code";
+    private float wd { get; set; }
+    private float dp { get; set; }
+
+    private bool showDepositPopup = false;
+    private bool showWithdrawalPopup = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bankServiceClient = new banque_serviceClient();
+        string uri = NavigationManager.Uri;
+
+        if (Uri.TryCreate(uri, UriKind.Absolute, out Uri absoluteUri))
+        {
+            string pin = absoluteUri.Query.TrimStart('?')
+                               .Split('&')
+                               .FirstOrDefault(param => param.StartsWith("pin=", StringComparison.OrdinalIgnoreCase));
+
+            if (pin != null)
+            {
+                Pin = pin.Substring(4);
+                await Connect();
+            }
+        }
+        var response = await _bankServiceClient.GetAccountAsync(DecryptedPin);
+        Amount = response.@return.solde;
+    }
+
+    private void TogglePin()
+    {
+        pinDisplayStyle = (pinDisplayStyle == "none") ? "inline" : "none";
+        displayPin = (displayPin == "Show PIN Code") ? "Hide PIN Code" : "Show PIN Code";
+    }
+
+    private async Task Connect()
+    {
+        var response1 = await _bankServiceClient.DecryptStringAsync(Pin, EncryptionKey);
+        DecryptedPin = response1.@return;
+    }
+
+    private void ShowDepositPopup()
+    {
+        showDepositPopup = true;
+        showWithdrawalPopup = false; // Close the withdrawal popup
+                                     // Clean the input
+        dp = 0;
+    }
+
+    private async void Deposit()
+    {
+        await _bankServiceClient.VerserMontantAsync(DecryptedPin, dp);
+        showDepositPopup = false;
+        // Clean the input
+        dp = 0;
+        var response = await _bankServiceClient.GetAccountAsync(DecryptedPin);
+        Amount = response.@return.solde;
+    }
+
+    private void CloseDepositPopup()
+    {
+        showDepositPopup = false;
+        // Clean the input
+        dp = 0;
+    }
+
+    private void ShowWithdrawalPopup()
+    {
+        showWithdrawalPopup = true;
+        showDepositPopup = false; // Close the deposit popup
+                                  // Clean the input
+        wd = 0;
+    }
+
+    private async void Withdraw()
+    {
+        if (wd > Amount)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Insufficient funds!");
+            return;
+        }
+
+        await _bankServiceClient.RetirerMontantAsync(DecryptedPin, wd);
+        showWithdrawalPopup = false;
+        // Clean the input
+        wd = 0;
+        var response = await _bankServiceClient.GetAccountAsync(DecryptedPin);
+        Amount = response.@return.solde;
+    }
+
+    private void CloseWithdrawalPopup()
+    {
+        showWithdrawalPopup = false;
+        // Clean the input
+        wd = 0;
+    }
+
+    private async Task DeleteAccount()
+    {
+        bool goToHomePage = await JSRuntime.InvokeAsync<bool>("confirm", "Your really wants to delete your account?");
+
+        if (goToHomePage)
+        {
+            await _bankServiceClient.DeleteAccountAsync(DecryptedPin);
+            await JSRuntime.InvokeVoidAsync("alert", "Account deleted!");
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private void DisConnect()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

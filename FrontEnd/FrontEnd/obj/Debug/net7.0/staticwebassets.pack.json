@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\tasni\\OneDrive\\Documents\\NetBeansProjects\\Banking_System-main\\FrontEnd\\FrontEnd\\wwwroot\\css\\create.css",
+      "PackagePath": "staticwebassets\\css\\create.css"
+    },
+    {
+      "Id": "C:\\Users\\tasni\\OneDrive\\Documents\\NetBeansProjects\\Banking_System-main\\FrontEnd\\FrontEnd\\wwwroot\\css\\home.css",
+      "PackagePath": "staticwebassets\\css\\home.css"
+    },
+    {
+      "Id": "C:\\Users\\tasni\\OneDrive\\Documents\\NetBeansProjects\\Banking_System-main\\FrontEnd\\FrontEnd\\wwwroot\\css\\index.css",
+      "PackagePath": "staticwebassets\\css\\index.css"
+    },
+    {
+      "Id": "C:\\Users\\tasni\\OneDrive\\Documents\\NetBeansProjects\\Banking_System-main\\FrontEnd\\FrontEnd\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.FrontEnd.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.FrontEnd.props",
+      "PackagePath": "build\\FrontEnd.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.FrontEnd.props",
+      "PackagePath": "buildMultiTargeting\\FrontEnd.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.FrontEnd.props",
+      "PackagePath": "buildTransitive\\FrontEnd.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,83 @@
+﻿@page "/create"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@using BankService
+@using FrontEnd.Models
+@using System
+
+<link href="css/create.css" rel="stylesheet" />
+<div class="login-box">
+<h1>Create account</h1>
+
+<!-- Input for Code -->
+    <div class="user-box">
+    <label for="code">Code:</label>
+    <input id="code" @bind="compte.Code" />
+    @if (!string.IsNullOrEmpty(compte.Code) && (compte.Code.Length != 4 || !compte.Code.All(char.IsDigit)))
+    {
+        <p style="color: red;">Code must be exactly 4 numeric characters.</p>
+    }
+    </div>
+
+<!-- Input for Starting Amount -->
+    <div class="user-box">
+    <label for="solde">Starting Amount:</label>
+    <input id="solde" @bind="compte.Solde" type="number" />
+    @if (compte.Solde < 0)
+    {
+        <p style="color: red;">Starting amount must be positive.</p>
+    }
+    </div>
+
+<!-- Button to create the account -->
+<button @onclick="CreateAccount">Create Account</button>
+<button @onclick="Return">Return</button>
+</div>
+@code {
+    Compte compte = new Compte("", 0);
+    private banque_serviceClient _bankServiceClient;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bankServiceClient = new banque_serviceClient();
+    }
+    private async Task LogToConsole(string message)
+    {
+        await JSRuntime.InvokeAsync<object>("console.log", message);
+    }
+
+    private async Task CreateAccount()
+    {
+        // Validate the input
+        if (compte.Code.Length != 4 || !compte.Code.All(char.IsDigit) ||
+            compte.Solde < 0)
+        {
+            // Show error message or handle validation appropriately
+            return;
+        }
+
+        // Call the service method with the converted account object
+        //await _bankServiceClient.CreateAccountAsync(account);
+        await _bankServiceClient.CreateAccountAsync(compte.Code, compte.Solde);
+
+        // Show confirmation popup
+        bool goToHomePage = await JSRuntime.InvokeAsync<bool>("confirm", "Account created successfully! Do you want to go back home?");
+
+        if (goToHomePage)
+        {
+            // Navigate to home
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            // Stay on the create page and clear inputs
+            compte.Code = "";
+            compte.Solde = 0;
+        }
+    }
+
+    private void Return()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}

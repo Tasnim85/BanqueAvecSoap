@@ -1,0 +1,353 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Alex+Brush|Overpass+Mono:600,700');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+
+body {
+    overflow-x: hidden;
+}
+
+/*
+  GLOBAL
+*/
+h2 {
+    margin-top: 0;
+}
+
+button {
+    border: 0;
+    background: 0;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    padding-bottom: 5px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+/*
+  NAV
+*/
+
+nav {
+    padding: 15px 35px;
+    display: flex;
+    position: fixed;
+}
+
+    nav h2 {
+        margin-bottom: 0;
+        flex: 1;
+        letter-spacing: 3px;
+        font-family: 'Overpass Mono', monospace !important;
+    }
+
+    nav #logo {
+        color: rgba(0,0,0,.6);
+        text-transform: uppercase;
+        border-bottom: solid 2px rgba(0,0,0,.6);
+    }
+
+    nav .nav-button {
+        color: #c0c0c0;
+        font-size: 23px;
+    }
+
+    nav div {
+        background: rgba(0, 0, 0, 0.9);
+        position: fixed;
+        right: 0;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+        text-align: center;
+        transform: scale(0);
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+        nav div ul {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        nav div .exit-menu {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: rgba(0,0,0,.6);
+            font-size: 20px;
+            padding: 10px;
+        }
+
+        nav div ul li {
+            font-family: 'PT Sans', sans-serif !important;
+            text-transform: uppercase;
+        }
+
+            nav div ul li a {
+                display: block;
+                color: rgba(0,0,0,.6);
+                padding: 15px 5px;
+                transition: all 0.4s;
+            }
+
+                nav div ul li a:hover,
+                nav div ul li .active:hover {
+                    color: #94143a;
+                    border-bottom-color: #94143a;
+                }
+
+@media screen and (max-width: 425px) {
+    header,
+    .bread-background,
+    .cake-background {
+        background-attachment: scroll;
+    }
+}
+
+@media (min-width: 768px) {
+    footer .restaurant-info {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+}
+
+@media (min-width: 769px) {
+    nav {
+        position: initial !important;
+        align-items: baseline;
+        padding: 20px 70px !important;
+    }
+
+        nav .nav-button {
+            display: none;
+        }
+
+        nav div {
+            position: initial !important;
+            background: none !important;
+            opacity: initial !important;
+            transform: initial !important;
+        }
+
+            nav div ul {
+                position: initial !important;
+                flex-direction: row !important;
+            }
+
+                nav div ul .exit-menu {
+                    display: none;
+                }
+
+                nav div ul li a {
+                    font-size: 12.8px;
+                    margin: 0 10px;
+                    letter-spacing: 1px;
+                    padding: 5px 0 !important;
+                }
+
+                nav div ul li .active {
+                    border-bottom: solid 1px lightgray;
+                }
+
+    .add-padding {
+        padding: 50px 0;
+    }
+
+    .add-flex {
+        flex-direction: row;
+        align-items: center;
+    }
+
+        .add-flex div:first-child {
+            flex: 1;
+            padding: 0 50px;
+        }
+
+        .add-flex div:last-child {
+            min-width: 400px;
+            margin: 50px;
+        }
+
+
+    th, td {
+        border: 1px solid #ddd; /* Ajoute une bordure aux cellules */
+        padding: 8px; /* Ajoute de l'espace à l'intérieur des cellules */
+        text-align: left; /* Alignement du texte à gauche */
+    }
+
+    /* Définir une largeur égale pour chaque colonne */
+    th, td {
+        width: 25%; /* Pour quatre colonnes égales */
+        font-family: "Arial", sans-serif; /* Police */
+        font-size: 20px; /* Taille de la police */
+    }
+    /* Add this to your existing CSS */
+    p {
+        margin-bottom: 10px;
+        
+    }
+
+    #decryptedPin {
+        font-weight: bold;
+        color: black; /* Green color for better visibility */
+    }
+
+   button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #94143a; /* Green color for Deposit button */
+        color: black; /* White text color for buttons */
+        cursor: pointer;
+        border-radius: 4px;
+        border: none;
+        margin-left: auto; /* Add this line to move the button to the right */
+    }
+
+    button:hover {
+        background-color: darkred; /* Darker green color on hover */
+    }
+
+    /* Styling for Current Amount section */
+    h3 {
+        margin-top: 20px;
+        font-size: 24px;
+        color: #333; /* Dark text color */
+    }
+
+    /* Styling for Deposit and Withdraw buttons */
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #94143a; /* Green color for Deposit button */
+        color: black; /* White text color for buttons */
+        cursor: pointer;
+        border-radius: 4px;
+        border: none;
+        margin-left: auto; /* Add this line to move the button to the right */
+    }
+
+        button:hover {
+            background-color: darkred; /* Darker green color on hover */
+        }
+
+    /* Popup styles */
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+        text-align: center;
+    }
+
+        .popup h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333; /* Dark text color */
+        }
+
+        .popup input {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc; /* Light border color */
+            border-radius: 4px;
+        }
+
+        .popup button {
+            padding: 8px 16px;
+            background-color: black; /* Blue color for buttons */
+            color: white; /* White text color for buttons */
+            cursor: pointer;
+            border-radius: 4px;
+            border: none;
+        }
+
+            .popup button:hover {
+                background-color: darkred; /* Darker blue color on hover */
+            }
+}
+/* Centered container for the specified part */
+.container {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    width: 500px;
+    padding: 100px;
+    transform: translate(-50%, -50%);
+    background: rgba(115, 18, 18, 0.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+    .container h1 {
+        margin: 0 0 30px;
+        padding: 0;
+        color: #94143a;
+        text-align: center;
+    }
+
+/* Styling for PIN section */
+.pin-section {
+    display: flex;
+    align-items: center;
+}
+
+#decryptedPin {
+    font-weight: bold;
+    color: black; /* Change the color as desired */
+}
+
+button {
+    background-color: black; /* Change the background color as desired */
+    color: #fff; /* Change the text color as desired */
+    padding: 10px 20px; /* Add padding to the buttons */
+    border-radius: 5px; /* Add rounded corners to the buttons */
+    cursor: pointer;
+    
+}
+
+h3 {
+    font-size: 18px; /* Adjust the font size as desired */
+    color: #333; /* Change the text color as desired */
+}
+
+/* Centered container for the solde change section */
+.cont1 {
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    width: 500px;
+    padding: 130px;
+    transform: translate(-50%, -50%);
+    background: rgba(115, 18, 18, 0.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+}
+
+    .cont1 h1 {
+        margin: 0 0 30px;
+        padding: 0;
+        color: #94143a;
+        text-align: center;
+    }
+    

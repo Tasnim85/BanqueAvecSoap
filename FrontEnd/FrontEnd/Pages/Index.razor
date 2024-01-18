@@ -1,0 +1,66 @@
+﻿@page "/"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+@using BankService
+
+<link href="css/index.css" rel="stylesheet" />
+<div class="login-box">
+    <h1>Welcome To our bank</h1>
+    <h3>Enter Your Pin Code To Access Your Bank Account</h3>
+    <form method="post" @onsubmit="Connect" formname="starship_plain_form">
+      <div class="user-box">
+        <input @bind="Pin" type="password" name="pin" placeholder="****" maxlength="4" pattern="\d{4}" required />
+      </div>
+    <button type="submit">Submit</button>
+</form>
+</div>
+
+@code {
+    private string Pin { get; set; }
+    private banque_serviceClient _bankServiceClient;
+    private Boolean exist;
+    private string EncryptionKey = "MyEncryptionKey123";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _bankServiceClient = new banque_serviceClient();
+    }
+
+    private async Task Connect()
+    {
+        try
+        {
+            // Access Pin here
+            var response2 = await _bankServiceClient.AccountExistsAsync(Pin);
+            exist = response2.@return;
+            var response1 = await _bankServiceClient.EncryptStringAsync(Pin, EncryptionKey);
+            Pin = response1.@return;
+
+            if (exist)
+            {
+                // Account exists, navigate to home
+                NavigationManager.NavigateTo($"/home?pin={Pin}");
+            }
+            else
+            {
+                // Account does not exist, show confirmation dialog
+                bool createAccount = await JSRuntime.InvokeAsync<bool>("confirm", "Account doesn't exist. Do you want to open a new account?");
+
+                if (createAccount)
+                {
+                    // Navigate to create account page
+                    NavigationManager.NavigateTo("/create");
+                }
+                // Otherwise, do nothing
+            }
+
+            // Clear the password input
+            Pin = "";
+        }
+        catch (Exception ex)
+        {
+            // Handle errors gracefully
+            // Display an error message to the user
+        }
+    }
+}
